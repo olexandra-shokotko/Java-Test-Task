@@ -17,7 +17,14 @@ public class Currency {
     @NotNull
     private Double lastPrice;
 //    @NotNull
-    private Timestamp time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp createdAt;
+
+    public Currency(String currName, Double lastPrice, Timestamp createdAt) {
+        this.currName = currName;
+        this.lastPrice = lastPrice;
+        this.createdAt = createdAt;
+    }
 
     public String getCurrName() {
         return currName;
@@ -35,11 +42,11 @@ public class Currency {
         this.lastPrice = lastPrice;
     }
 
-    public Date getTime() {
-        return time;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }
