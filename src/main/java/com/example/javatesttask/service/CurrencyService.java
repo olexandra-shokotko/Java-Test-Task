@@ -3,6 +3,8 @@ package com.example.javatesttask.service;
 import com.example.javatesttask.domain.Currency;
 import com.example.javatesttask.repository.CurrencyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
