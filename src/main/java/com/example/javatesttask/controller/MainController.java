@@ -4,10 +4,11 @@ import com.example.javatesttask.domain.Currency;
 import com.example.javatesttask.repository.CurrencyRepo;
 import com.example.javatesttask.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +22,12 @@ public class MainController {
     private CurrencyRepo currencyRepo;
 
     @GetMapping("/minprice")
-    public Currency getMinPrice(@RequestParam("name") String name) {
+    public Currency getMinPrice(@RequestParam("name") String name) throws Exception {
         return currencyService.findMinByName(name);
     }
 
     @GetMapping("/maxprice")
-    public Currency getMaxPrice(@RequestParam("name") String name) {
+    public Currency getMaxPrice(@RequestParam("name") String name) throws Exception {
         return currencyService.findMaxByName(name);
     }
 
@@ -37,6 +38,11 @@ public class MainController {
         return currencyRepo.findByCurrName(name, pageable).getContent();
     }
 
-
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler(Exception.class)
+    public String logicalException(Exception ex) {
+        return new Error("error: " + ex.getMessage()).getMessage();
+//        return new ResponseEntity<Object>(new Object(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 
 }

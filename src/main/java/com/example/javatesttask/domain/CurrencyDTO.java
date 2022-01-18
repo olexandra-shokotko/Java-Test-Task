@@ -4,6 +4,7 @@ public class CurrencyDTO {
     private String lprice;
     private String curr1;
     private String curr2;
+    private String error;
 
     public String getLprice() {
         return lprice;
@@ -27,5 +28,13 @@ public class CurrencyDTO {
 
     public void setCurr2(String curr2) {
         this.curr2 = curr2;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }

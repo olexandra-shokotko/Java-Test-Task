@@ -5,14 +5,13 @@ import com.example.javatesttask.domain.CurrencyDTO;
 import com.example.javatesttask.repository.CurrencyRepo;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CurrencyService {
@@ -21,17 +20,14 @@ public class CurrencyService {
     @Autowired
     CurrencyClient currencyClient;
 
-    public Currency findMinByName(String currName) {
-        @NotNull
+    public Currency findMinByName(String currName) throws Exception {
+        if (!Arrays.asList(Currency.possibleCurrencyNames).contains(currName)) {
+            throw new Exception("invalid parameters (possible: BTC, ETH, XRP)");
+        }
+
         List<Currency> currencies = getCurrenciesByCurrName(currName);
 
         Currency currencyToReturn;
-
-//        if (currencies.size() == 0) {
-//            currencyToReturn = null;
-//            Optional<Currency> opt = Optional.ofNullable(currencyToReturn);
-//            return opt;
-//        }
         double firstPrice = currencies.get(0).getLastPrice();
         currencyToReturn = currencies.get(0);
 
@@ -45,7 +41,11 @@ public class CurrencyService {
         return currencyToReturn;
     }
 
-    public Currency findMaxByName(String currName) {
+    public Currency findMaxByName(String currName) throws Exception {
+        if (!Arrays.asList(Currency.possibleCurrencyNames).contains(currName)) {
+            throw new Exception("invalid parameters (possible: BTC, ETH, XRP)");
+        }
+
         List<Currency> currencies = getCurrenciesByCurrName(currName);
 
         double firstPrice = currencies.get(0).getLastPrice();
@@ -64,14 +64,17 @@ public class CurrencyService {
         return currencyRepo.findByCurrName(currName);
     }
 
-    public Currency getCurrencyAPI() {
-        return toCurrency(currencyClient.getCurr());
+    public Currency getCurrencyFromApi(String currencyName) throws Exception {
+        if (!Arrays.asList(Currency.possibleCurrencyNames).contains(currencyName)) {
+            throw new Exception("invalid parameters (possible: BTC, ETH, XRP)");
+        }
+        return createCurrencyFromDto(currencyClient.getCurrencyDtoFromApi(currencyName));
     }
 
-    private Currency toCurrency(@NotNull CurrencyDTO input) {
+    private Currency createCurrencyFromDto(@NotNull CurrencyDTO input) {
         return new Currency(input.getCurr1(),
                 Double.parseDouble(input.getLprice()),
-                Timestamp.valueOf(LocalDateTime.now())
+                Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
         );
     }
 }
