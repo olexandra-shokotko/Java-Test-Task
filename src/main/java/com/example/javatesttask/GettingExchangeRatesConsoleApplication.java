@@ -33,6 +33,7 @@ public class GettingExchangeRatesConsoleApplication implements CommandLineRunner
 
         for (String currencyName : currenciesNames) {
             Currency currency = currencyService.getCurrencyFromApi(currencyName);
+            currencyRepo.save(currency);
             LOG.info(currency.toString());
         }
     }

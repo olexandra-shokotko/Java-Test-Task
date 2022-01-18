@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CurrencyRepo extends JpaRepository<Currency, Long> {
+    List<Currency> findAll();
     List<Currency> findByCurrName(String currName);
     Page<Currency> findByCurrName(String currName, Pageable pageable);
 
@@ -19,4 +20,7 @@ public interface CurrencyRepo extends JpaRepository<Currency, Long> {
 
     @Query(value = "select * from currency c where curr_name = ?1 order by last_price desc limit 1", nativeQuery = true)
     Currency findMaxByCurrName(String currName);
+
+    @Query(value = "select curr_name, min(last_price), max(last_price) from currency c group by curr_name", nativeQuery = true)
+    List<String []> findMinMax();
 }
