@@ -25,20 +25,7 @@ public class CurrencyService {
             throw new Exception("invalid parameters (possible: BTC, ETH, XRP)");
         }
 
-        List<Currency> currencies = getCurrenciesByCurrName(currName);
-
-        Currency currencyToReturn;
-        double firstPrice = currencies.get(0).getLastPrice();
-        currencyToReturn = currencies.get(0);
-
-        for (Currency currency : currencies) {
-            if (currency.getLastPrice() < firstPrice) {
-                firstPrice = currency.getLastPrice();
-                currencyToReturn = currency;
-            }
-        }
-
-        return currencyToReturn;
+        return currencyRepo.findMinByCurrName(currName);
     }
 
     public Currency findMaxByName(String currName) throws Exception {
@@ -46,22 +33,7 @@ public class CurrencyService {
             throw new Exception("invalid parameters (possible: BTC, ETH, XRP)");
         }
 
-        List<Currency> currencies = getCurrenciesByCurrName(currName);
-
-        double firstPrice = currencies.get(0).getLastPrice();
-        Currency currencyToReturn = currencies.get(0);
-        for (Currency currency : currencies) {
-            if (currency.getLastPrice() > firstPrice) {
-                firstPrice = currency.getLastPrice();
-                currencyToReturn = currency;
-            }
-        }
-
-        return currencyToReturn;
-    }
-
-    public List<Currency> getCurrenciesByCurrName(String currName) {
-        return currencyRepo.findByCurrName(currName);
+        return currencyRepo.findMaxByCurrName(currName);
     }
 
     public Currency getCurrencyFromApi(String currencyName) throws Exception {
