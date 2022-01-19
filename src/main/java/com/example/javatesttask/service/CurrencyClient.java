@@ -1,11 +1,9 @@
 package com.example.javatesttask.service;
 
-import com.example.javatesttask.domain.Currency;
 import com.example.javatesttask.domain.CurrencyDTO;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
